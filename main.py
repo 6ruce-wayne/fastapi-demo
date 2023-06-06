@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from routers import mainmongo
+from routers import vote
 
 app = FastAPI()
 
+app.include_router(vote.router)    
 # New
 book_db = [
     {
