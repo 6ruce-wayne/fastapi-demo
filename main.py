@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-
-import routers.mainmongo as mainmongo
+from routers import mainmongo
 
 app = FastAPI()
 
