@@ -9,26 +9,28 @@ client = MongoClient("mongodb://localhost:27017")
 db = client["votes"]
 collection =db["votes"]
 
+#Model objects
 class Vote(BaseModel):
     name : str
     count : int
 
-def vote_serializer(Vote)->dict():
-    return {"id":Vote._id,"name":Vote.name,"count":Vote.count}
+#Schema objects
+def vote_serializer(vote)->dict():
+    return {
+        "id":str(vote["_id"]),
+        "name":vote["name"],
+        "count":vote["count"]
+        }
 
 def votes_serializer(votes)->list:
     return [vote_serializer(vote) for vote in votes]
 
-    
+#get all votes    
 @router.get("/vote")
 async def root():   
-    votes = collection.find({}).to_list(1000)
+    votes = votes_serializer(collection.find({}))
     if votes:
-       return {
-            "id": str(votes["_id"]),
-            "name": votes["name"],
-            "count": votes["count"]
-        }
+       return {"status":"OK","data":votes}
     else:
         raise HTTPException(status_code=404,detail="Vote not found")
 
