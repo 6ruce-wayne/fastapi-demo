@@ -1,0 +1,21 @@
+[{
+  "_id": {
+    "$oid": "647ebbeb0731f4f4d1b60de5"
+  },
+  "name": "Vote 1",
+  "count": 1
+},
+{
+  "_id": {
+    "$oid": "647fe5807a8fa4082ca10cbf"
+  },
+  "name": "vote 22",
+  "count": 20
+},
+{
+  "_id": {
+    "$oid": "647fe58b7a8fa4082ca10cc0"
+  },
+  "name": "vote 31",
+  "count": 99
+}]
