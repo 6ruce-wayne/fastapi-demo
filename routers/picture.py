@@ -8,8 +8,10 @@ import os
 
 router = APIRouter()
 
+#mount
 router.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
+#counters
 @router.get("/picture")
 async def count_pictures():
     dir_parth = r'uploads'
@@ -19,7 +21,7 @@ async def count_pictures():
             count += 1
     return {"message":"Total pictures = "+str(count)}
 
-
+#upload fiess picutres
 @router.post("/picture_upload2")
 async def post_endpoint(in_file: UploadFile = File(...)):
     random_name = uuid.uuid4()
@@ -30,11 +32,12 @@ async def post_endpoint(in_file: UploadFile = File(...)):
 
     return {"message": "Uploaded","data": str(out_file.name),"Picture":FileResponse(out_file.name)}
 
+#Get picture file
 @router.get("/picture/{file_name}")
 async def get_picture(file_name:str):
     path =  "uploads/"+file_name+".jpg"
     return FileResponse(path)
-
+#Remove picture file
 @router.delete("/picture/{file_name}")
 async def delete_picture(file_name:str):
     path="uploads/"+file_name+".jpg"
