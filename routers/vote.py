@@ -5,8 +5,10 @@ from bson.objectid import ObjectId
 
 router = APIRouter()
 
-client = MongoClient("mongodb://localhost:27017")
-db = client["votes"]
+userdb = str("6rucewayne")
+pwdb = str("sqHLQjeAiDqPB3qZ")
+client = MongoClient("mongodb+srv://6rucewayne:"+pwdb+"@cluster0.muzyzlw.mongodb.net/")
+db = client["votes-simple"]
 collection =db["votes"]
 
 #Model objects
