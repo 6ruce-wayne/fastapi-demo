@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from routers import vote
+from routers import vote,picture
 
 app = FastAPI()
 
-app.include_router(vote.router)    
+app.include_router(vote.router)  
+app.include_router(picture.router)  
 # New
 book_db = [
     {
