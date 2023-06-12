@@ -7,6 +7,8 @@ import uuid
 import os
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
+import bcrypt
+import hashlib
 
 
 router = APIRouter()
@@ -43,10 +45,19 @@ fake_users_db = {
         "hashed_password": "fakehashedsecret2",
         "disabled": True,
     },
+    "romz": {
+        "username": "romz",
+        "full_name": "Parinya Kunchai",
+        "email": "rmninthailand@gmail.com",
+        "hashed_password": "$2b$12$xvsCpt5D.zU908JQwDaMD.pNJeeJpsM9UkSt7c.kooQPD6TrmNGfK",
+        "disabled": True,
+    },
 }
+#ัInput check password
+def fake_hash_password(password: str):  
+    hashpassword = password.encode('utf-8')
+    return hashpassword
 
-def fake_hash_password(password: str):
-    return "fakehashed" + password
 class UserInDB(User):
     hashed_password: str
 
@@ -86,12 +97,17 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     if not user_dict:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     user = UserInDB(**user_dict)
-    hashed_password = fake_hash_password(form_data.password)
-    if not hashed_password == user.hashed_password:
+    hashed_password = fake_hash_password(form_data.password)  
+    if not bcrypt.checkpw(hashed_password,user.hashed_password.encode('utf-8')):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
-
     return {"access_token": user.username, "token_type": "bearer"}
 
+@router.get('/user/hash/{word}')
+async def user_hash(word:str):
+    passw = word.encode('utf-8')
+    mysalt = bcrypt.gensalt()
+    pwd_hash = bcrypt.hashpw(passw,mysalt)
+    return pwd_hash
 
 #getuser
 @router.get("/user/me")
